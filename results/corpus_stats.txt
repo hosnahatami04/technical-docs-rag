@@ -1,0 +1,56 @@
+==================================================================
+CORPUS STATISTICS
+  pg_version=17.0
+  git_tag=REL_17_0
+  source_url=https://codeload.github.com/postgres/postgres/tar.gz/refs/tags/REL_17_0
+  sha256=9a4b01944f9749e90e28b58e3c8556d900b68e3eef02ee509284d5312831787d
+  sgml_files=386
+  fetched_at=2026-09-16T07:45:28Z
+==================================================================
+
+Documents loaded             379
+Total tokens           1,344,576
+Mean tokens/doc            3,548
+Median tokens/doc            983
+Min tokens/doc                44
+Max tokens/doc           114,264
+p50 tokens/doc                983
+p75 tokens/doc              3,163
+p90 tokens/doc              8,585
+p95 tokens/doc             15,301
+p99 tokens/doc             41,984
+
+Documents by type:
+  sql_command     220   58.0%  #######################
+  guide           128   33.8%  ##############
+  appendix         14    3.7%  #
+  extension        12    3.2%  #
+  catalog           2    0.5%  #
+  function_ref      2    0.5%  #
+  config            1    0.3%  #
+
+Max section depth (sect1..sectN):
+  0    234   61.7%  #########################
+  2     69   18.2%  #######
+  1     43   11.3%  #####
+  3     27    7.1%  ###
+  4      6    1.6%  #
+
+Atomic code blocks         3,917
+Docs containing code         328  (87%)
+
+Largest documents:
+   114,264  func.sgml                          Functions and Operators
+    54,659  config.sgml                        Server Configuration
+    48,762  libpq.sgml                         libpq — C Library
+    41,984  ecpg.sgml                          ECPG — Embedded SQL in C
+    32,012  plpgsql.sgml                       PL/pgSQL — SQL Procedural La
+    29,172  ddl.sgml                           Data Definition
+    26,390  protocol.sgml                      Frontend/Backend Protocol
+    24,837  catalogs.sgml                      System Catalogs
+
+------------------------------------------------------------------
+At 512-token chunks with 64 overlap (stride 448):
+  estimated chunks         3,193
+  mean chunks/doc            8.4
+------------------------------------------------------------------
