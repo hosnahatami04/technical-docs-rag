@@ -1,0 +1,10 @@
+# Normalize line endings so the repo behaves the same on Windows and in CI.
+* text=auto eol=lf
+
+# Shell scripts must keep LF endings. A CRLF shebang makes Linux look for an
+# interpreter literally named "bash\r", which fails with a confusing
+# "bad interpreter" error — and CI runs on Linux.
+*.sh text eol=lf
+
+# Makefiles are tab-sensitive and must not be touched.
+Makefile text eol=lf
