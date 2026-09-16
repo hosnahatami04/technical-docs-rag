@@ -1,0 +1,41 @@
+
+  note: 4 unanswerable questions have no absent_terms and rest on a fact never being stated rather than a term never appearing: unans-009, unans-010, unans-013, unans-014
+==================================================================
+QUESTION SET
+==================================================================
+
+  total questions           70
+  answerable                55
+  unanswerable              15
+
+  by category:
+    conceptual       10   multi-document: 0
+    factual          20   multi-document: 0
+    multi_section    10   multi-document: 9
+    procedural       15   multi-document: 1
+    unanswerable     15   multi-document: 0
+
+  key claims total         143
+  mean claims/question     2.6
+
+  distinct gold documents   24
+  most cited:
+    config.sgml                         23  (42% of answerable)
+    high-availability.sgml               4  (7% of answerable)
+    backup.sgml                          4  (7% of answerable)
+    ref/create_materialized_view.sgml    3  (5% of answerable)
+    logical-replication.sgml             3  (5% of answerable)
+    maintenance.sgml                     3  (5% of answerable)
+
+  distinct gold headings    48
+    section-level scoring is what separates 'found config.sgml'
+    from 'found the passage about this parameter'
+
+==================================================================
+VERIFIED
+==================================================================
+
+  Every gold path exists, every gold heading names a real section, every
+  answerable question's gold documents discuss its subject, and every
+  unanswerable question's subject is genuinely absent from the corpus.
+
