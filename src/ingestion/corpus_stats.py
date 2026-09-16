@@ -2,11 +2,11 @@
 
 Run:  python -m src.ingestion.corpus_stats
 
-These numbers feed two decisions. They go in the README so a reader knows what
-the retrieval numbers were measured over, and they tell us whether the planned
-512-token chunk size is sensible for documents of this shape — a corpus whose
-average document is 80k tokens splits into a very different number of chunks
-than one averaging 2k, and that changes embedding time and index size.
+These numbers feed two decisions. They record what the retrieval numbers were
+measured over, and they tell us whether the planned 512-token chunk size is
+sensible for documents of this shape — a corpus whose average document is 80k
+tokens splits into a very different number of chunks than one averaging 2k, and
+that changes embedding time and index size.
 """
 
 from __future__ import annotations

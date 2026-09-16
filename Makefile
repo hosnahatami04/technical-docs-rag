@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help install corpus stats test lint fmt check clean
+.PHONY: help install corpus stats chunks test lint fmt check clean
 
 PYTHON ?= python
 
@@ -15,6 +15,9 @@ corpus:  ## Download the pinned PostgreSQL docs corpus
 
 stats:  ## Print corpus statistics
 	$(PYTHON) -m src.ingestion.corpus_stats
+
+chunks:  ## Compare the two chunking strategies
+	$(PYTHON) -m src.ingestion.chunk_stats
 
 test:  ## Run the test suite
 	$(PYTHON) -m pytest tests/ -q
