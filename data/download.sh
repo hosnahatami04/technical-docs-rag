@@ -79,8 +79,8 @@ count=$(find "${DOCS_DIR}" -name '*.sgml' | wc -l)
 echo
 echo "Done. ${count} .sgml files in ${DOCS_DIR}"
 
-# Record what we actually fetched, so the loader and the README can report the
-# corpus version without anyone having to remember it.
+# Record what we actually fetched, so the corpus version can be reported
+# without anyone having to remember it.
 cat > "${RAW_DIR}/CORPUS_VERSION" <<EOF
 pg_version=${PG_VERSION}
 git_tag=${PG_TAG}

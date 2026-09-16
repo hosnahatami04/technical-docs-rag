@@ -1,0 +1,69 @@
+==================================================================
+CHUNKING COMPARISON
+  documents         379
+  target tokens     512
+  overlap tokens    64
+==================================================================
+
+FIXED — naive baseline, cut every N tokens
+------------------------------------------------------------------
+  chunks                     3,146
+  total tokens           1,521,664
+  mean tokens/chunk            484
+  median tokens/chunk          512
+  max tokens/chunk             512
+  percentiles           p10=417  p25=512  p50=512  p75=512  p90=512  p99=512
+
+  over the 512-token embedding limit: 0 (0.0%)
+  under 50 tokens:        1 (0.0%)
+  carrying a heading path: 0 (0%)
+
+  by document type:
+    guide            1,993
+    sql_command        761
+    config             122
+    catalog            102
+    function_ref        66
+    appendix            52
+    extension           50
+
+STRUCTURAL — section-aware, atomic blocks kept whole
+------------------------------------------------------------------
+  chunks                     6,406
+  total tokens           1,303,392
+  mean tokens/chunk            203
+  median tokens/chunk          138
+  max tokens/chunk           3,940
+  percentiles           p10=23  p25=74  p50=138  p75=304  p90=472  p99=770
+
+  over the 512-token embedding limit: 117 (1.8%)
+    by kind: table=80, code=37
+    tokens the embedder will not see: 56,985
+  under 50 tokens:        1,133 (17.7%)
+  carrying a heading path: 6,406 (100%)
+
+  by document type:
+    guide            3,210
+    sql_command      2,379
+    config             354
+    catalog            169
+    extension          113
+    function_ref        93
+    appendix            88
+
+==================================================================
+WHAT THIS DOES AND DOES NOT SHOW
+==================================================================
+
+  Structural produces 2.0x the chunks of fixed, and they are smaller:
+  it breaks at section boundaries rather than filling to a token budget.
+
+  Whether that helps retrieval is not answerable here. Smaller chunks give
+  sharper embeddings but less context; heading prefixes add signal but also
+  add tokens. The labeled question set (Phase 3) and the metrics harness
+  (Phase 5) decide it, and that is where the tuning belongs.
+
+  What can be said now: 6,406 of
+  6,406 structural chunks carry an explicit heading path, and
+  none of the fixed ones do.
+
