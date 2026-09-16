@@ -1,0 +1,42 @@
+feat(eval): 70 labeled questions with a corpus verifier
+
+Phase 3 of 7. The question set is written before any retriever exists, because
+an evaluation written afterwards tends to be one the system passes.
+
+70 questions: 20 factual, 15 procedural, 10 conceptual, 10 multi-section, 15
+unanswerable. 143 key claims across the 55 answerable ones.
+
+Adds a field the plan does not specify: gold_headings. The corpus survey found
+all 374 configuration parameters in a single 54k-token config.sgml, and 23 of
+the 55 answerable questions (42%) point at that one file. Scored at file level
+those are hits as soon as any chunk from config.sgml appears, which measures
+almost nothing. Phase 5 will report both file-level Hit@k (comparable to how
+other work reports) and section-level Hit@k (whether the right passage was
+actually found).
+
+The unanswerable fifteen follow four patterns, each verified against the corpus
+rather than assumed: nine are real PostgreSQL 18 features absent from 17.0
+(io_method, io_workers, io_uring, uuidv7, OAuth, WITHOUT OVERLAPS,
+autovacuum_vacuum_max_threshold, vacuum_max_eager_scan_fail_rate,
+enable_self_join_removal); two are invented names built to sit beside real ones
+(checkpoint_spread_factor next to checkpoint_completion_target); one asks for
+syntax the docs describe conceptually then say is not implemented; three ask
+for a specific fact inside a thoroughly documented topic.
+
+Eleven carry absent_terms that verify_questions checks against the whole
+corpus. The other four rest on a fact never being stated, which no string
+search can confirm, and are reported as unverifiable rather than passed
+silently.
+
+verify_questions.py caught three labeling errors that review had not:
+- indexes.sgml does not exist; the file is indices.sgml
+- REINDEX > Parameters > Rebuilding Indexes Concurrently is wrong; that section
+  is under Notes
+- a multi_section question citing two distant headings inside config.sgml was
+  rejected by a validator rule assuming multi-section meant multi-file. The
+  rule was wrong: the plan says "distant parts of the docs", and config.sgml's
+  Memory and Query Planning sections are as far apart as two files.
+
+All 66 heading entries match a real section exactly, not by prefix.
+
+36 new tests; 101 total.

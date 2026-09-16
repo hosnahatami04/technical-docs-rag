@@ -1,0 +1,1140 @@
+[
+  {
+    "id": "fact-001",
+    "question": "What is the default value of max_wal_size in PostgreSQL?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Write Ahead Log > Checkpoints"
+    ],
+    "gold_answer": "The default value of max_wal_size is 1 GB.",
+    "key_claims": [
+      "max_wal_size defaults to 1 GB",
+      "max_wal_size sets the maximum size the WAL is allowed to grow between automatic checkpoints"
+    ]
+  },
+  {
+    "id": "fact-002",
+    "question": "What is the default value of min_wal_size?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Write Ahead Log > Checkpoints"
+    ],
+    "gold_answer": "The default value of min_wal_size is 80 MB.",
+    "key_claims": [
+      "min_wal_size defaults to 80 MB",
+      "WAL files are recycled rather than removed as long as WAL disk usage stays below min_wal_size"
+    ]
+  },
+  {
+    "id": "fact-003",
+    "question": "How many autovacuum worker processes run by default?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Automatic Vacuuming"
+    ],
+    "gold_answer": "autovacuum_max_workers defaults to three, so up to three autovacuum worker processes may run at once.",
+    "key_claims": [
+      "autovacuum_max_workers defaults to three",
+      "autovacuum_max_workers can only be set at server start"
+    ]
+  },
+  {
+    "id": "fact-004",
+    "question": "What is the default value of temp_buffers?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Resource Consumption > Memory"
+    ],
+    "gold_answer": "temp_buffers defaults to eight megabytes (8MB).",
+    "key_claims": [
+      "temp_buffers defaults to 8MB",
+      "temp_buffers sets the maximum amount of memory used for temporary buffers within each database session"
+    ]
+  },
+  {
+    "id": "fact-005",
+    "question": "What password encryption method does PostgreSQL use by default?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Connections and Authentication > Authentication"
+    ],
+    "gold_answer": "password_encryption defaults to scram-sha-256.",
+    "key_claims": [
+      "password_encryption defaults to scram-sha-256",
+      "password_encryption determines the algorithm used to encrypt a password when it is specified in CREATE ROLE or ALTER ROLE"
+    ]
+  },
+  {
+    "id": "fact-006",
+    "question": "How many iterations does SCRAM use when hashing a password by default?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Connections and Authentication > Authentication"
+    ],
+    "gold_answer": "scram_iterations defaults to 4096.",
+    "key_claims": [
+      "scram_iterations defaults to 4096",
+      "a higher iteration count provides additional protection against brute-force attacks but makes authentication slower"
+    ],
+    "notes": "Tests retrieval on an identifier that is not in the question text, so the retriever must bridge 'SCRAM iterations' to scram_iterations."
+  },
+  {
+    "id": "fact-007",
+    "question": "What is the default value of default_statistics_target?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Query Planning > Other Planner Options"
+    ],
+    "gold_answer": "default_statistics_target defaults to 100.",
+    "key_claims": [
+      "default_statistics_target defaults to 100",
+      "larger values increase the time needed to do ANALYZE but may improve the quality of the planner's estimates"
+    ]
+  },
+  {
+    "id": "fact-008",
+    "question": "What is the default value of from_collapse_limit?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Query Planning > Other Planner Options"
+    ],
+    "gold_answer": "from_collapse_limit defaults to eight.",
+    "key_claims": [
+      "from_collapse_limit defaults to eight",
+      "from_collapse_limit controls when the planner merges a sub-query into the upper query based on the resulting FROM list size"
+    ]
+  },
+  {
+    "id": "fact-009",
+    "question": "How often does PostgreSQL rotate log files by default?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Error Reporting and Logging > Where to Log"
+    ],
+    "gold_answer": "log_rotation_age defaults to 24 hours.",
+    "key_claims": [
+      "log_rotation_age defaults to 24 hours",
+      "setting log_rotation_age to zero disables time-based creation of new log files"
+    ]
+  },
+  {
+    "id": "fact-010",
+    "question": "What is the default value of checkpoint_warning?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Write Ahead Log > Checkpoints"
+    ],
+    "gold_answer": "checkpoint_warning defaults to 30 seconds (30s).",
+    "key_claims": [
+      "checkpoint_warning defaults to 30 seconds",
+      "a message is written to the server log if checkpoints caused by filling WAL segment files happen closer together than this"
+    ]
+  },
+  {
+    "id": "fact-011",
+    "question": "What does the CONCURRENTLY option do in CREATE INDEX?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/create_index.sgml"
+    ],
+    "gold_headings": [
+      "CREATE INDEX > Parameters"
+    ],
+    "gold_answer": "CONCURRENTLY builds the index without taking locks that prevent concurrent inserts, updates or deletes on the table, whereas a standard index build locks out writes until it completes.",
+    "key_claims": [
+      "CONCURRENTLY builds the index without taking locks that prevent concurrent inserts, updates or deletes",
+      "a standard index build locks out writes but not reads until it is done"
+    ]
+  },
+  {
+    "id": "fact-012",
+    "question": "What does VACUUM FULL do differently from a plain VACUUM?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/vacuum.sgml"
+    ],
+    "gold_headings": [
+      "VACUUM > Description"
+    ],
+    "gold_answer": "VACUUM FULL rewrites the entire contents of the table into a new disk file with no extra space, returning unused space to the operating system. It is much slower and requires an ACCESS EXCLUSIVE lock on each table it processes.",
+    "key_claims": [
+      "VACUUM FULL rewrites the entire table into a new disk file with no extra space",
+      "VACUUM FULL requires an ACCESS EXCLUSIVE lock on the table",
+      "VACUUM FULL returns unused space to the operating system"
+    ]
+  },
+  {
+    "id": "fact-013",
+    "question": "What does the ANALYZE option of EXPLAIN do?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/explain.sgml"
+    ],
+    "gold_headings": [
+      "EXPLAIN > Description"
+    ],
+    "gold_answer": "The ANALYZE option causes the statement to be actually executed, not only planned, and adds real run-time statistics to the output including elapsed time per plan node and actual row counts.",
+    "key_claims": [
+      "EXPLAIN ANALYZE actually executes the statement rather than only planning it",
+      "actual run time statistics are added to the display",
+      "the output includes the total number of rows each node actually returned"
+    ]
+  },
+  {
+    "id": "fact-014",
+    "question": "What happens if a materialized view is created WITH NO DATA?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/create_materialized_view.sgml"
+    ],
+    "gold_headings": [
+      "CREATE MATERIALIZED VIEW > Parameters"
+    ],
+    "gold_answer": "The materialized view is flagged as unscannable and cannot be queried until REFRESH MATERIALIZED VIEW is used.",
+    "key_claims": [
+      "a materialized view created WITH NO DATA is flagged as unscannable",
+      "it cannot be queried until REFRESH MATERIALIZED VIEW is run"
+    ]
+  },
+  {
+    "id": "fact-015",
+    "question": "Which kinds of generated columns does PostgreSQL implement?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ddl.sgml"
+    ],
+    "gold_headings": [
+      "Data Definition > Generated Columns"
+    ],
+    "gold_answer": "PostgreSQL currently implements only stored generated columns. The STORED keyword must be specified in the GENERATED ALWAYS AS clause.",
+    "key_claims": [
+      "PostgreSQL currently implements only stored generated columns",
+      "the STORED keyword must be specified to choose the stored kind of generated column"
+    ],
+    "notes": "The docs describe virtual generated columns conceptually but state they are not implemented. A retriever that finds only the conceptual passage will produce an ungrounded answer."
+  },
+  {
+    "id": "fact-016",
+    "question": "What lock level does CREATE INDEX take on a temporary table?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/create_index.sgml"
+    ],
+    "gold_headings": [
+      "CREATE INDEX > Parameters"
+    ],
+    "gold_answer": "For temporary tables CREATE INDEX is always non-concurrent, since no other session can access them and a non-concurrent build is cheaper.",
+    "key_claims": [
+      "for temporary tables CREATE INDEX is always non-concurrent",
+      "no other session can access a temporary table"
+    ]
+  },
+  {
+    "id": "fact-017",
+    "question": "How do I disable parallel vacuum for a single VACUUM command?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/vacuum.sgml"
+    ],
+    "gold_headings": [
+      "VACUUM > Description"
+    ],
+    "gold_answer": "Use the PARALLEL option and specify zero parallel workers.",
+    "key_claims": [
+      "the PARALLEL option with zero workers disables parallel vacuum",
+      "parallel vacuum uses parallel workers to process indexes"
+    ]
+  },
+  {
+    "id": "fact-018",
+    "question": "What is the difference between CREATE MATERIALIZED VIEW and CREATE TABLE AS?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/create_materialized_view.sgml"
+    ],
+    "gold_headings": [
+      "CREATE MATERIALIZED VIEW > Description"
+    ],
+    "gold_answer": "CREATE MATERIALIZED VIEW also remembers the query used to initialize the view, so the view can be refreshed on demand later.",
+    "key_claims": [
+      "CREATE MATERIALIZED VIEW remembers the query used to initialize the view",
+      "the view can be refreshed later on demand",
+      "CREATE TABLE AS does not retain the query"
+    ]
+  },
+  {
+    "id": "fact-019",
+    "question": "What is the default value of huge_page_size?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Resource Consumption > Memory"
+    ],
+    "gold_answer": "huge_page_size defaults to zero (0), meaning the system default huge page size is used.",
+    "key_claims": [
+      "huge_page_size defaults to zero",
+      "a value of zero means the default huge page size on the system is used"
+    ]
+  },
+  {
+    "id": "fact-020",
+    "question": "What is the default value of commit_siblings?",
+    "category": "factual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Write Ahead Log > Settings"
+    ],
+    "gold_answer": "commit_siblings defaults to five transactions.",
+    "key_claims": [
+      "commit_siblings defaults to five",
+      "commit_siblings is the minimum number of concurrent open transactions required before performing the commit_delay wait"
+    ]
+  },
+  {
+    "id": "proc-001",
+    "question": "How do I set up streaming replication between a primary and a standby server?",
+    "category": "procedural",
+    "answerable": true,
+    "gold_doc_paths": [
+      "high-availability.sgml"
+    ],
+    "gold_headings": [
+      "High Availability, Load Balancing, and Replication > Log-Shipping Standby Servers > Setting Up a Standby Server"
+    ],
+    "gold_answer": "Take a base backup of the primary, place it in the standby's data directory, create a standby.signal file, and set primary_conninfo in postgresql.conf so the standby can connect to the primary. The primary must allow replication connections from the standby in pg_hba.conf.",
+    "key_claims": [
+      "a base backup of the primary is restored into the standby data directory",
+      "a standby.signal file puts the server into standby mode",
+      "primary_conninfo specifies how the standby connects to the primary"
+    ]
+  },
+  {
+    "id": "proc-002",
+    "question": "How do I take a base backup of a running PostgreSQL server?",
+    "category": "procedural",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/pg_basebackup.sgml"
+    ],
+    "gold_headings": [
+      "pg_basebackup"
+    ],
+    "gold_answer": "Run pg_basebackup, which takes a base backup of a running PostgreSQL cluster over a regular replication connection without affecting other clients.",
+    "key_claims": [
+      "pg_basebackup takes a base backup of a running PostgreSQL cluster",
+      "the backup is made over a regular PostgreSQL connection using the replication protocol",
+      "the backup does not affect other clients connected to the database"
+    ]
+  },
+  {
+    "id": "proc-003",
+    "question": "How do I configure continuous WAL archiving?",
+    "category": "procedural",
+    "answerable": true,
+    "gold_doc_paths": [
+      "backup.sgml"
+    ],
+    "gold_headings": [
+      "Backup and Restore > Continuous Archiving and Point-in-Time Recovery (PITR) > Setting Up WAL Archiving"
+    ],
+    "gold_answer": "Set wal_level to replica or higher, turn archive_mode on, and set archive_command (or archive_library) to a command that copies each completed WAL segment to long-term storage. The command must return zero only on success and must not overwrite an existing file.",
+    "key_claims": [
+      "archive_mode must be enabled",
+      "archive_command is a shell command that copies a completed WAL segment to archive storage",
+      "the archive command must refuse to overwrite an existing archive file"
+    ]
+  },
+  {
+    "id": "proc-004",
+    "question": "How do I restore a database from a pg_dump file?",
+    "category": "procedural",
+    "answerable": true,
+    "gold_doc_paths": [
+      "backup.sgml"
+    ],
+    "gold_headings": [
+      "Backup and Restore > SQL Dump > Restoring the Dump"
+    ],
+    "gold_answer": "For a plain-text dump, feed the file to psql against the target database. For archive-format dumps produced with -F, use pg_restore. The target database must already exist.",
+    "key_claims": [
+      "a plain text dump is restored by feeding it to psql",
+      "the target database must be created before restoring",
+      "pg_restore is used for non-plain-text dump formats"
+    ]
+  },
+  {
+    "id": "proc-005",
+    "question": "How do I add a NOT NULL constraint to an existing column?",
+    "category": "procedural",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/alter_table.sgml"
+    ],
+    "gold_headings": [
+      "ALTER TABLE > Description"
+    ],
+    "gold_answer": "Use ALTER TABLE ... ALTER COLUMN column_name SET NOT NULL. The table must contain no null values in that column.",
+    "key_claims": [
+      "SET NOT NULL adds a not-null constraint to an existing column",
+      "the column must contain no null values for the command to succeed"
+    ]
+  },
+  {
+    "id": "proc-006",
+    "question": "How do I rebuild an index without blocking writes to the table?",
+    "category": "procedural",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/reindex.sgml"
+    ],
+    "gold_headings": [
+      "REINDEX > Notes > Rebuilding Indexes Concurrently"
+    ],
+    "gold_answer": "Use REINDEX with the CONCURRENTLY option, which rebuilds the index without taking any locks that prevent concurrent inserts, updates or deletes on the table.",
+    "key_claims": [
+      "REINDEX CONCURRENTLY rebuilds an index without blocking writes",
+      "a standard REINDEX locks out writes on the table"
+    ]
+  },
+  {
+    "id": "proc-007",
+    "question": "How do I load data from a CSV file into a table?",
+    "category": "procedural",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/copy.sgml"
+    ],
+    "gold_headings": [
+      "COPY > Parameters"
+    ],
+    "gold_answer": "Use COPY table_name FROM 'filename' WITH (FORMAT csv). COPY FROM reads from a file on the server, while psql's \\copy reads from a file on the client.",
+    "key_claims": [
+      "COPY FROM copies data from a file into a table",
+      "FORMAT csv selects the comma separated values format",
+      "COPY FROM with a filename reads the file on the server"
+    ]
+  },
+  {
+    "id": "proc-008",
+    "question": "How do I create a read-only user in PostgreSQL?",
+    "category": "procedural",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/create_role.sgml",
+      "ref/grant.sgml"
+    ],
+    "gold_headings": [
+      "CREATE ROLE",
+      "GRANT"
+    ],
+    "gold_answer": "Create a role with LOGIN using CREATE ROLE, then GRANT only SELECT on the relevant tables or schemas to that role, withholding INSERT, UPDATE and DELETE.",
+    "key_claims": [
+      "CREATE ROLE with LOGIN creates a role that can connect",
+      "GRANT SELECT gives read access to a table"
+    ]
+  },
+  {
+    "id": "proc-009",
+    "question": "How do I set up logical replication between two databases?",
+    "category": "procedural",
+    "answerable": true,
+    "gold_doc_paths": [
+      "logical-replication.sgml"
+    ],
+    "gold_headings": [
+      "Logical Replication > Quick Setup"
+    ],
+    "gold_answer": "Set wal_level to logical on the publisher, create a publication with CREATE PUBLICATION on the publisher, and create a subscription with CREATE SUBSCRIPTION on the subscriber pointing at the publisher's connection string.",
+    "key_claims": [
+      "wal_level must be set to logical on the publisher",
+      "CREATE PUBLICATION defines what is replicated on the publisher",
+      "CREATE SUBSCRIPTION on the subscriber connects to the publisher"
+    ]
+  },
+  {
+    "id": "proc-010",
+    "question": "How do I change a configuration parameter without restarting the server?",
+    "category": "procedural",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Setting Parameters > Parameter Interaction via the Configuration File"
+    ],
+    "gold_answer": "Edit postgresql.conf and send the server a SIGHUP, for example with pg_ctl reload or by calling pg_reload_conf(). This only works for parameters whose context allows reloading; parameters marked as requiring a restart still need one.",
+    "key_claims": [
+      "sending SIGHUP makes the server re-read postgresql.conf",
+      "pg_ctl reload sends the SIGHUP signal",
+      "some parameters can only be set at server start"
+    ]
+  },
+  {
+    "id": "proc-011",
+    "question": "How do I find which queries are currently running on the server?",
+    "category": "procedural",
+    "answerable": true,
+    "gold_doc_paths": [
+      "monitoring.sgml"
+    ],
+    "gold_headings": [
+      "Monitoring Database Activity > The Cumulative Statistics System > pg_stat_activity"
+    ],
+    "gold_answer": "Query the pg_stat_activity view, which shows one row per server process with the current query text, state, and how long it has been running.",
+    "key_claims": [
+      "pg_stat_activity shows one row per server process",
+      "the query column shows the text of the statement currently being executed"
+    ]
+  },
+  {
+    "id": "proc-012",
+    "question": "How do I perform a point-in-time recovery?",
+    "category": "procedural",
+    "answerable": true,
+    "gold_doc_paths": [
+      "backup.sgml"
+    ],
+    "gold_headings": [
+      "Backup and Restore > Continuous Archiving and Point-in-Time Recovery (PITR) > Recovering Using a Continuous Archive Backup"
+    ],
+    "gold_answer": "Restore a base backup into the data directory, create a recovery.signal file, set restore_command so the server can fetch archived WAL, and set a recovery target such as recovery_target_time. The server replays WAL up to that target on startup.",
+    "key_claims": [
+      "a base backup is restored into the data directory",
+      "restore_command tells the server how to retrieve archived WAL segments",
+      "a recovery target such as recovery_target_time specifies where to stop replaying"
+    ]
+  },
+  {
+    "id": "proc-013",
+    "question": "How do I create a table that inherits from another table?",
+    "category": "procedural",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/create_table.sgml"
+    ],
+    "gold_headings": [
+      "CREATE TABLE > Parameters"
+    ],
+    "gold_answer": "Use the INHERITS clause: CREATE TABLE child (...) INHERITS (parent). The new table automatically gets all columns of the parent tables.",
+    "key_claims": [
+      "the INHERITS clause specifies a list of tables from which the new table inherits all columns",
+      "use of INHERITS creates a persistent relationship between the child and parent tables"
+    ]
+  },
+  {
+    "id": "proc-014",
+    "question": "How do I gather statistics for the query planner on a table?",
+    "category": "procedural",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/analyze.sgml"
+    ],
+    "gold_headings": [
+      "ANALYZE > Description"
+    ],
+    "gold_answer": "Run ANALYZE, optionally naming a table, to collect statistics about the contents of tables and store the results in pg_statistic for the query planner to use.",
+    "key_claims": [
+      "ANALYZE collects statistics about the contents of tables in the database",
+      "the results are stored in the pg_statistic system catalog",
+      "the query planner uses these statistics to choose execution plans"
+    ]
+  },
+  {
+    "id": "proc-015",
+    "question": "How do I promote a standby server to become the primary?",
+    "category": "procedural",
+    "answerable": true,
+    "gold_doc_paths": [
+      "high-availability.sgml"
+    ],
+    "gold_headings": [
+      "High Availability, Load Balancing, and Replication > Log-Shipping Standby Servers > Standby Server Operation"
+    ],
+    "gold_answer": "Run pg_ctl promote or call the pg_promote() function on the standby. It stops recovery and begins accepting write transactions as the new primary.",
+    "key_claims": [
+      "pg_ctl promote promotes a standby server",
+      "the pg_promote function can also trigger promotion",
+      "after promotion the server stops recovery and accepts write transactions"
+    ]
+  },
+  {
+    "id": "conc-001",
+    "question": "What is the difference between a view and a materialized view?",
+    "category": "conceptual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/create_materialized_view.sgml"
+    ],
+    "gold_headings": [
+      "CREATE MATERIALIZED VIEW > Description"
+    ],
+    "gold_answer": "A view runs its defining query each time it is read and stores nothing. A materialized view stores the query result on disk and must be refreshed with REFRESH MATERIALIZED VIEW to pick up changes.",
+    "key_claims": [
+      "a materialized view stores the result of the query physically",
+      "a materialized view is refreshed on demand with REFRESH MATERIALIZED VIEW",
+      "a materialized view has many of the same properties as a table"
+    ]
+  },
+  {
+    "id": "conc-002",
+    "question": "Why does PostgreSQL need VACUUM at all?",
+    "category": "conceptual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "maintenance.sgml"
+    ],
+    "gold_headings": [
+      "Routine Database Maintenance Tasks > Routine Vacuuming > Vacuuming Basics"
+    ],
+    "gold_answer": "PostgreSQL's MVCC implementation leaves behind dead row versions when rows are updated or deleted. VACUUM reclaims that space, and also updates planner statistics and protects against transaction ID wraparound.",
+    "key_claims": [
+      "an UPDATE or DELETE does not immediately remove the old version of the row",
+      "VACUUM reclaims the storage occupied by dead tuples",
+      "VACUUM protects against loss of very old data due to transaction ID wraparound"
+    ]
+  },
+  {
+    "id": "conc-003",
+    "question": "What is MVCC and how does PostgreSQL use it?",
+    "category": "conceptual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "mvcc.sgml"
+    ],
+    "gold_headings": [
+      "Concurrency Control > Introduction"
+    ],
+    "gold_answer": "Multiversion Concurrency Control gives each transaction a snapshot of the data, so readers never block writers and writers never block readers. Each query sees the data as it was when the query began, regardless of concurrent changes.",
+    "key_claims": [
+      "each transaction sees a snapshot of data rather than the current state",
+      "reading never blocks writing and writing never blocks reading",
+      "MVCC avoids the locking contention of traditional lock-based concurrency control"
+    ]
+  },
+  {
+    "id": "conc-004",
+    "question": "What is the difference between a primary key and a unique constraint?",
+    "category": "conceptual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ddl.sgml"
+    ],
+    "gold_headings": [
+      "Data Definition > Constraints > Primary Keys"
+    ],
+    "gold_answer": "A primary key is a unique constraint combined with a not-null constraint, and a table can have at most one primary key. Unique constraints allow null values and a table may have many of them.",
+    "key_claims": [
+      "a primary key is a unique constraint plus a not-null constraint",
+      "a table can have at most one primary key",
+      "unique constraints permit null values"
+    ]
+  },
+  {
+    "id": "conc-005",
+    "question": "What is the write-ahead log and why does PostgreSQL use one?",
+    "category": "conceptual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "wal.sgml"
+    ],
+    "gold_headings": [
+      "Reliability and the Write-Ahead Log > Write-Ahead Logging (WAL)"
+    ],
+    "gold_answer": "WAL records every change to data files before the change itself is written. Because the log is flushed first, the database can be recovered after a crash by replaying the log, and data pages need not be flushed on every commit.",
+    "key_claims": [
+      "changes to data files must be written only after those changes have been logged",
+      "the log record must be flushed to permanent storage before the data pages",
+      "WAL allows recovery after a crash by replaying the log"
+    ]
+  },
+  {
+    "id": "conc-006",
+    "question": "What is transaction ID wraparound?",
+    "category": "conceptual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "maintenance.sgml"
+    ],
+    "gold_headings": [
+      "Routine Database Maintenance Tasks > Routine Vacuuming > Preventing Transaction ID Wraparound Failures"
+    ],
+    "gold_answer": "Transaction IDs are a finite 32-bit counter that wraps around. Without periodic vacuuming, rows older than roughly two billion transactions would appear to be in the future and effectively disappear.",
+    "key_claims": [
+      "PostgreSQL transaction IDs are 32-bit numbers and wrap around",
+      "without vacuuming, very old rows would appear to be in the future and become invisible",
+      "VACUUM freezes old rows to prevent this"
+    ]
+  },
+  {
+    "id": "conc-007",
+    "question": "What is the difference between streaming replication and logical replication?",
+    "category": "conceptual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "logical-replication.sgml"
+    ],
+    "gold_headings": [
+      "Logical Replication"
+    ],
+    "gold_answer": "Streaming replication ships raw WAL and produces a byte-identical physical copy of the whole cluster. Logical replication reproduces changes at the level of data objects using a publication and subscription model, allowing selective replication and different structures on each side.",
+    "key_claims": [
+      "logical replication replicates changes based on replication identity rather than block addresses",
+      "logical replication uses a publish and subscribe model",
+      "physical replication produces a byte-by-byte identical copy"
+    ]
+  },
+  {
+    "id": "conc-008",
+    "question": "What is a TOAST table and when does PostgreSQL use one?",
+    "category": "conceptual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "storage.sgml"
+    ],
+    "gold_headings": [
+      "Database Physical Storage > TOAST"
+    ],
+    "gold_answer": "TOAST stores values too large to fit in a single page out of line in an associated table, compressing or splitting them into chunks. PostgreSQL uses it automatically for wide values in variable-length types.",
+    "key_claims": [
+      "PostgreSQL uses a fixed page size and cannot store field values spanning multiple pages directly",
+      "large field values are compressed or broken into multiple physical rows",
+      "the technique is known as TOAST"
+    ]
+  },
+  {
+    "id": "conc-009",
+    "question": "What is the difference between a B-tree index and a GIN index?",
+    "category": "conceptual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "indices.sgml"
+    ],
+    "gold_headings": [
+      "Indexes > Index Types"
+    ],
+    "gold_answer": "B-tree indexes handle equality and range queries on sortable data and are the default. GIN indexes are inverted indexes suited to values containing multiple component values, such as array elements or the lexemes of a document.",
+    "key_claims": [
+      "B-tree is the default index type and handles equality and range queries on orderable data",
+      "GIN is an inverted index appropriate for values that contain multiple component values",
+      "GIN can index arrays and full text search documents"
+    ]
+  },
+  {
+    "id": "conc-010",
+    "question": "Why can an index make a query slower instead of faster?",
+    "category": "conceptual",
+    "answerable": true,
+    "gold_doc_paths": [
+      "indices.sgml"
+    ],
+    "gold_headings": [
+      "Indexes > Introduction"
+    ],
+    "gold_answer": "Indexes must be updated on every write, adding overhead to INSERT, UPDATE and DELETE. When a query returns a large fraction of a table, a sequential scan is cheaper than following the index, and an unused index is pure cost.",
+    "key_claims": [
+      "indexes add overhead to data modification operations",
+      "an index that is never used for queries should be removed",
+      "the planner may choose a sequential scan over an index scan"
+    ]
+  },
+  {
+    "id": "multi-001",
+    "question": "How do shared_buffers and effective_cache_size relate when tuning a server, and what does each one actually control?",
+    "category": "multi_section",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml",
+      "perform.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Resource Consumption > Memory",
+      "Server Configuration > Query Planning > Planner Cost Constants"
+    ],
+    "gold_answer": "shared_buffers is an allocation: the amount of memory the server actually reserves for shared memory buffers. effective_cache_size allocates nothing; it tells the planner how much cache is assumed available from both PostgreSQL and the operating system, which influences whether index scans look cheap.",
+    "key_claims": [
+      "shared_buffers sets the amount of memory the database server uses for shared memory buffers",
+      "effective_cache_size does not reserve any memory",
+      "effective_cache_size is used by the planner to estimate the cost of index scans"
+    ],
+    "notes": "Requires combining a Resource Consumption section with a Query Planning section that sit far apart in the same document."
+  },
+  {
+    "id": "multi-002",
+    "question": "What has to be configured on both the primary and the standby for streaming replication to work?",
+    "category": "multi_section",
+    "answerable": true,
+    "gold_doc_paths": [
+      "high-availability.sgml",
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "High Availability, Load Balancing, and Replication > Log-Shipping Standby Servers > Setting Up a Standby Server",
+      "Server Configuration > Replication > Sending Servers"
+    ],
+    "gold_answer": "The primary needs wal_level at replica or higher, enough max_wal_senders, and a pg_hba.conf entry permitting replication connections. The standby needs a base backup of the primary, a standby.signal file, and primary_conninfo pointing at the primary.",
+    "key_claims": [
+      "the primary must allow replication connections in pg_hba.conf",
+      "max_wal_senders limits the number of concurrent connections from standby servers",
+      "the standby sets primary_conninfo to connect to the primary"
+    ]
+  },
+  {
+    "id": "multi-003",
+    "question": "How do autovacuum settings interact with the vacuum cost delay parameters?",
+    "category": "multi_section",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml",
+      "maintenance.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Automatic Vacuuming",
+      "Server Configuration > Resource Consumption > Cost-based Vacuum Delay"
+    ],
+    "gold_answer": "Cost-based vacuum delay throttles vacuum by sleeping once accumulated cost exceeds a limit. Autovacuum has its own autovacuum_vacuum_cost_delay and autovacuum_vacuum_cost_limit, which fall back to the plain vacuum_cost_delay and vacuum_cost_limit values when set to negative one.",
+    "key_claims": [
+      "cost-based vacuum delay pauses vacuum once the accumulated cost exceeds the cost limit",
+      "autovacuum_vacuum_cost_delay applies to autovacuum workers",
+      "a value of -1 makes autovacuum use the regular vacuum cost setting"
+    ]
+  },
+  {
+    "id": "multi-004",
+    "question": "What is the full set of steps and settings needed to recover a cluster to a specific point in time?",
+    "category": "multi_section",
+    "answerable": true,
+    "gold_doc_paths": [
+      "backup.sgml",
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Backup and Restore > Continuous Archiving and Point-in-Time Recovery (PITR) > Recovering Using a Continuous Archive Backup",
+      "Server Configuration > Write Ahead Log > Recovery Target"
+    ],
+    "gold_answer": "Restore the base backup, create recovery.signal, set restore_command to fetch archived WAL, and set one recovery target such as recovery_target_time. Only one recovery target may be set, and recovery_target_action decides whether the server pauses, promotes or shuts down when the target is reached.",
+    "key_claims": [
+      "restore_command retrieves an archived segment of the WAL file series",
+      "only one of the recovery target settings may be specified",
+      "recovery_target_action determines what happens when the recovery target is reached"
+    ]
+  },
+  {
+    "id": "multi-005",
+    "question": "How does work_mem interact with the number of concurrent connections and parallel workers in total memory use?",
+    "category": "multi_section",
+    "answerable": true,
+    "gold_doc_paths": [
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Server Configuration > Resource Consumption > Memory",
+      "Server Configuration > Resource Consumption > Asynchronous Behavior"
+    ],
+    "gold_answer": "work_mem is per sort or hash operation, not per session. A complex query may run several such operations at once, and each parallel worker may use its own allocation, so total memory can be many multiples of work_mem across max_connections sessions.",
+    "key_claims": [
+      "work_mem applies to each sort or hash operation rather than to the whole query",
+      "several operations may be running concurrently within one query",
+      "each parallel worker may consume its own work_mem allocation"
+    ],
+    "notes": "The trap question for tuning advice: an answer that says 'total memory is work_mem times max_connections' is wrong and should be caught by the grounding gate."
+  },
+  {
+    "id": "multi-006",
+    "question": "What is the relationship between checkpoints, max_wal_size and checkpoint_timeout?",
+    "category": "multi_section",
+    "answerable": true,
+    "gold_doc_paths": [
+      "wal.sgml",
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Reliability and the Write-Ahead Log > WAL Configuration",
+      "Server Configuration > Write Ahead Log > Checkpoints"
+    ],
+    "gold_answer": "Checkpoints are triggered either by checkpoint_timeout elapsing or by WAL usage approaching max_wal_size, whichever comes first. Raising them makes checkpoints less frequent, reducing I/O spikes but increasing crash recovery time and disk usage.",
+    "key_claims": [
+      "a checkpoint is triggered when checkpoint_timeout has elapsed or max_wal_size is about to be exceeded",
+      "less frequent checkpoints increase the time needed for crash recovery",
+      "max_wal_size is a soft limit rather than a hard one"
+    ]
+  },
+  {
+    "id": "multi-007",
+    "question": "How do table-level autovacuum storage parameters override the server-wide autovacuum settings?",
+    "category": "multi_section",
+    "answerable": true,
+    "gold_doc_paths": [
+      "ref/create_table.sgml",
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "CREATE TABLE > Parameters > Storage Parameters",
+      "Server Configuration > Automatic Vacuuming"
+    ],
+    "gold_answer": "CREATE TABLE and ALTER TABLE accept storage parameters such as autovacuum_vacuum_scale_factor and autovacuum_enabled, which override the corresponding postgresql.conf settings for that one table.",
+    "key_claims": [
+      "storage parameters can be set per table with CREATE TABLE or ALTER TABLE",
+      "autovacuum_enabled can disable autovacuum for a single table",
+      "per-table settings override the server-wide autovacuum configuration"
+    ]
+  },
+  {
+    "id": "multi-008",
+    "question": "Which parameters must be identical on a primary and its standby, and why?",
+    "category": "multi_section",
+    "answerable": true,
+    "gold_doc_paths": [
+      "high-availability.sgml",
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "High Availability, Load Balancing, and Replication > Hot Standby > Administrator's Overview",
+      "Server Configuration > Resource Consumption > Memory"
+    ],
+    "gold_answer": "Parameters that size shared memory structures — max_connections, max_worker_processes, max_prepared_transactions and max_locks_per_transaction — must be at least as large on the standby as on the primary, because the standby must be able to hold the primary's state during replay.",
+    "key_claims": [
+      "certain parameters must be set on the standby to a value at least as high as on the primary",
+      "max_connections is among the parameters that must not be smaller on the standby",
+      "the standby will refuse to start or pause recovery if these values are too small"
+    ]
+  },
+  {
+    "id": "multi-009",
+    "question": "How do index type choice and the planner cost settings together determine whether an index gets used?",
+    "category": "multi_section",
+    "answerable": true,
+    "gold_doc_paths": [
+      "indices.sgml",
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Indexes > Examining Index Usage",
+      "Server Configuration > Query Planning > Planner Cost Constants"
+    ],
+    "gold_answer": "The planner compares the estimated cost of an index scan against a sequential scan using random_page_cost, seq_page_cost and effective_cache_size. An index of the wrong type, or cost settings that overstate random I/O, will make a sequential scan look cheaper even when an index exists.",
+    "key_claims": [
+      "random_page_cost sets the planner's estimate of the cost of a non-sequentially-fetched disk page",
+      "the default random_page_cost assumes the cost of random access is higher than sequential access",
+      "the planner chooses between an index scan and a sequential scan by comparing estimated costs"
+    ]
+  },
+  {
+    "id": "multi-010",
+    "question": "What happens to replication slots when a subscriber goes offline, and how does that affect WAL retention on the publisher?",
+    "category": "multi_section",
+    "answerable": true,
+    "gold_doc_paths": [
+      "logical-replication.sgml",
+      "config.sgml"
+    ],
+    "gold_headings": [
+      "Logical Replication > Subscription",
+      "Server Configuration > Replication > Sending Servers"
+    ],
+    "gold_answer": "A replication slot makes the publisher retain WAL until the subscriber has confirmed receipt. If the subscriber stays offline, WAL accumulates indefinitely and can fill the disk, which is what max_slot_wal_keep_size bounds.",
+    "key_claims": [
+      "a replication slot ensures the publisher retains WAL needed by the subscriber",
+      "WAL can accumulate and exhaust disk space if a subscriber does not consume it",
+      "max_slot_wal_keep_size limits how much WAL replication slots may retain"
+    ]
+  },
+  {
+    "id": "unans-001",
+    "question": "What is the default value of io_method in PostgreSQL?",
+    "category": "unanswerable",
+    "answerable": false,
+    "unanswerable_reason": "io_method is the GUC introduced with the asynchronous I/O subsystem in PostgreSQL 18. It does not exist in 17.0 and the string never appears in this corpus.",
+    "notes": "Plausible because it is named exactly like a real parameter and asks the same question shape as fact-001.",
+    "absent_terms": [
+      "io_method"
+    ]
+  },
+  {
+    "id": "unans-002",
+    "question": "How many io_workers does PostgreSQL start by default?",
+    "category": "unanswerable",
+    "answerable": false,
+    "unanswerable_reason": "io_workers accompanies the PostgreSQL 18 asynchronous I/O subsystem. It is absent from 17.0. A retriever will likely surface max_worker_processes or autovacuum_max_workers, which are the wrong answer.",
+    "absent_terms": [
+      "io_workers"
+    ]
+  },
+  {
+    "id": "unans-003",
+    "question": "How do I generate a UUIDv7 value in PostgreSQL?",
+    "category": "unanswerable",
+    "answerable": false,
+    "unanswerable_reason": "The uuidv7() function arrived in PostgreSQL 18. Version 17.0 documents gen_random_uuid(), which produces a version 4 UUID, so a retriever will find a near-match that does not answer the question.",
+    "absent_terms": [
+      "uuidv7"
+    ]
+  },
+  {
+    "id": "unans-004",
+    "question": "How do I configure OAuth authentication for client connections?",
+    "category": "unanswerable",
+    "answerable": false,
+    "unanswerable_reason": "OAuth as a pg_hba.conf authentication method was added in PostgreSQL 18. The 17.0 corpus documents scram-sha-256, LDAP, GSSAPI, SSPI, RADIUS and certificate authentication, but never OAuth.",
+    "notes": "Strong distractor: the client-auth chapter is full of authentication methods, so retrieval will confidently return something.",
+    "absent_terms": [
+      "oauth"
+    ]
+  },
+  {
+    "id": "unans-005",
+    "question": "How do I define a temporal primary key using WITHOUT OVERLAPS?",
+    "category": "unanswerable",
+    "answerable": false,
+    "unanswerable_reason": "WITHOUT OVERLAPS, which turns a primary key into a temporal constraint, is a PostgreSQL 18 feature. The phrase does not occur anywhere in the 17.0 documentation.",
+    "absent_terms": [
+      "without overlaps"
+    ]
+  },
+  {
+    "id": "unans-006",
+    "question": "What is the default value of autovacuum_vacuum_max_threshold?",
+    "category": "unanswerable",
+    "answerable": false,
+    "unanswerable_reason": "autovacuum_vacuum_max_threshold was added in PostgreSQL 18. Version 17.0 has autovacuum_vacuum_threshold and autovacuum_vacuum_scale_factor, which are similarly named and will almost certainly be retrieved instead.",
+    "notes": "The hardest kind of unanswerable question: one character-level neighbour of a real parameter.",
+    "absent_terms": [
+      "autovacuum_vacuum_max_threshold"
+    ]
+  },
+  {
+    "id": "unans-007",
+    "question": "What does vacuum_max_eager_scan_fail_rate control?",
+    "category": "unanswerable",
+    "answerable": false,
+    "unanswerable_reason": "This parameter belongs to the eager freezing work in PostgreSQL 18 and has no counterpart in 17.0.",
+    "absent_terms": [
+      "vacuum_max_eager_scan_fail_rate"
+    ]
+  },
+  {
+    "id": "unans-008",
+    "question": "How do I enable the self-join removal optimization in the planner?",
+    "category": "unanswerable",
+    "answerable": false,
+    "unanswerable_reason": "enable_self_join_removal is a PostgreSQL 18 planner GUC. The 17.0 corpus documents many other enable_* planner flags, so a retriever will return a list of them without noticing this one is missing.",
+    "absent_terms": [
+      "enable_self_join_removal"
+    ]
+  },
+  {
+    "id": "unans-009",
+    "question": "What is the syntax for declaring a VIRTUAL generated column?",
+    "category": "unanswerable",
+    "answerable": false,
+    "unanswerable_reason": "PostgreSQL 17.0 describes virtual generated columns as a concept but states that it implements only stored ones, so no syntax is documented. The conceptual passage is a strong distractor that discusses virtual generated columns at length.",
+    "notes": "Deliberately paired with fact-015, which asks the answerable version of the same topic."
+  },
+  {
+    "id": "unans-010",
+    "question": "How do I configure the number of parallel workers used by pg_dump?",
+    "category": "unanswerable",
+    "answerable": false,
+    "unanswerable_reason": "pg_dump takes a --jobs option for parallel dumps but has no configuration parameter for worker counts. The question presupposes a server setting that does not exist, and config.sgml contains many parameters with 'parallel' and 'workers' in their names."
+  },
+  {
+    "id": "unans-011",
+    "question": "What is the default value of checkpoint_spread_factor?",
+    "category": "unanswerable",
+    "answerable": false,
+    "unanswerable_reason": "No such parameter exists in any PostgreSQL version. It is invented to sound like checkpoint_completion_target, which is real and controls exactly the spreading behaviour the name suggests.",
+    "notes": "Tests whether the system distinguishes a plausible name from a documented one.",
+    "absent_terms": [
+      "checkpoint_spread_factor"
+    ]
+  },
+  {
+    "id": "unans-012",
+    "question": "How do I use log_connections_verbose to get more detail in connection logs?",
+    "category": "unanswerable",
+    "answerable": false,
+    "unanswerable_reason": "Invented parameter. PostgreSQL 17.0 has log_connections as a boolean; the verbose variant does not exist. The question is phrased as though the parameter is known to exist, which is the harder form of unanswerable.",
+    "absent_terms": [
+      "log_connections_verbose"
+    ]
+  },
+  {
+    "id": "unans-013",
+    "question": "Which PostgreSQL version first supported parallel query execution?",
+    "category": "unanswerable",
+    "answerable": false,
+    "unanswerable_reason": "The documentation describes how parallel query works but does not state which release introduced it. Version history of this kind lives in release notes for other versions, not in the 17.0 reference documentation.",
+    "notes": "Unanswerable for a different reason than the others: the topic is covered thoroughly, but this specific fact is not stated. Tests whether abstention depends on topical similarity or on actually checking the claim."
+  },
+  {
+    "id": "unans-014",
+    "question": "What is the maximum number of rows a PostgreSQL table can hold?",
+    "category": "unanswerable",
+    "answerable": false,
+    "unanswerable_reason": "The documented limits cover table size, column count and field size, but the maximum row count is listed as unlimited rather than given as a number. A retriever will find the limits appendix and an answer may invent a figure from the table size limit.",
+    "notes": "Tests groundedness as much as abstention: the neighbouring facts are real and quotable, which invites a fabricated number."
+  },
+  {
+    "id": "unans-015",
+    "question": "How do I configure PostgreSQL to use io_uring for asynchronous I/O on Linux?",
+    "category": "unanswerable",
+    "answerable": false,
+    "unanswerable_reason": "io_uring support arrived with the PostgreSQL 18 asynchronous I/O subsystem. Version 17.0 documents effective_io_concurrency and posix_fadvise-based prefetching, which are related enough to be retrieved but do not answer the question.",
+    "absent_terms": [
+      "io_uring"
+    ]
+  }
+]
