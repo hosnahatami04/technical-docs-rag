@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help install corpus stats chunks questions index reindex eval analyze generate ask test lint fmt check clean
+.PHONY: help install corpus stats chunks questions index reindex eval analyze generate ask serve gate docker-build docker-run test lint fmt check clean
 
 PYTHON ?= python
 
@@ -42,18 +42,30 @@ generate:  ## Run the full pipeline over every question, then report
 ask:  ## Ask one question through the full pipeline
 	$(PYTHON) -m src.generation.demo
 
+serve:  ## Run the API locally with reload
+	$(PYTHON) -m uvicorn src.api:app --reload --port 8000
+
+gate:  ## Check committed results against their recorded floors
+	$(PYTHON) scripts/check_thresholds.py
+
+docker-build:  ## Build the container image
+	docker build -t technical-docs-rag .
+
+docker-run:  ## Run the image, mounting the corpus and indexes
+	docker run --rm -p 8000:8000 		-v "$(CURDIR)/data:/app/data" 		--add-host=host.docker.internal:host-gateway 		technical-docs-rag
+
 test:  ## Run the test suite
 	$(PYTHON) -m pytest tests/ -q
 
 lint:  ## Check formatting and lint rules
-	$(PYTHON) -m ruff check src tests
-	$(PYTHON) -m ruff format --check src tests
+	$(PYTHON) -m ruff check src tests scripts
+	$(PYTHON) -m ruff format --check src tests scripts
 
 fmt:  ## Apply formatting and autofixable lint rules
-	$(PYTHON) -m ruff check --fix src tests
-	$(PYTHON) -m ruff format src tests
+	$(PYTHON) -m ruff check --fix src tests scripts
+	$(PYTHON) -m ruff format src tests scripts
 
-check: lint test  ## Everything CI runs
+check: lint test gate  ## Everything CI runs
 
 clean:  ## Remove caches (keeps the downloaded corpus and indexes)
 	rm -rf .pytest_cache .ruff_cache

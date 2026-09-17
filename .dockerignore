@@ -1,0 +1,25 @@
+# The corpus and indexes are mounted at run time, not baked in. Without this
+# the build context includes ~80MB of downloaded documentation and embeddings,
+# which is uploaded to the daemon on every build.
+data/raw/
+data/indexes/
+
+# Caches and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.cache/
+*.egg-info/
+
+# Version control and CI
+.git/
+.github/
+.gitignore
+.gitattributes
+
+# Scratch
+.msgtmp/
+*.log

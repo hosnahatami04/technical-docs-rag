@@ -1,0 +1,124 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# A second push to the same PR cancels the first run rather than queueing it.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  lint:
+    name: Lint and format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      # Only ruff is needed to lint, and installing the full stack here would
+      # add several minutes to a job that finishes in seconds.
+      - name: Install ruff
+        run: pip install "ruff==0.8.6"
+
+      - run: ruff check src tests scripts
+      - run: ruff format --check src tests scripts
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      # The CPU-only torch wheel is ~200MB against ~2.5GB for CUDA, and no CI
+      # runner has a GPU.
+      - name: Install dependencies
+        run: |
+          pip install --extra-index-url https://download.pytorch.org/whl/cpu \
+            -r requirements.txt
+
+      # Every test builds its own fixtures. None reads data/raw/ (gitignored,
+      # 13MB) or calls Ollama (no model on a runner), which is what keeps this
+      # job under a minute and independent of anything external.
+      - name: Run tests
+        run: pytest tests/ -q
+
+  quality-gate:
+    name: Quality gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      # The plan asks CI to fail when retrieval or groundedness regresses. A
+      # runner cannot reproduce those numbers — it has no corpus, no embedding
+      # index and no GPU — so this checks the committed results instead.
+      #
+      # That still catches what matters. The numbers in results/ are what the
+      # README and the PR descriptions quote, so a change that degrades
+      # retrieval and regenerates them fails here, and so does hand-editing
+      # them to look better.
+      - name: Check committed results against thresholds
+        run: python scripts/check_thresholds.py
+
+  docker:
+    name: Docker build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      # Build only — running it would need the corpus and a reachable Ollama.
+      # What this proves is that the image still builds and the embedding model
+      # still bakes in, which is where this Dockerfile breaks in practice.
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          load: true
+          tags: technical-docs-rag:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Check the image starts and reports its health
+        run: |
+          docker run -d --name rag -p 8000:8000 technical-docs-rag:ci
+          # Startup is slow without a corpus: it fails to build indexes, which
+          # is expected here. /health must still answer and say so.
+          for i in $(seq 1 30); do
+            if curl -fsS http://localhost:8000/health > /tmp/health.json; then
+              break
+            fi
+            sleep 2
+          done
+          cat /tmp/health.json
+          python -c "
+          import json, sys
+          health = json.load(open('/tmp/health.json'))
+          # Without a mounted corpus the service cannot be 'ok', but it must
+          # report that clearly rather than crash — that is the contract.
+          assert health['status'] in {'ok', 'degraded', 'starting'}, health
+          assert health['corpus_present'] is False, health
+          print('health endpoint responded:', health['status'])
+          "
+          docker rm -f rag
