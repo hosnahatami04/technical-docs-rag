@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help install corpus stats chunks questions test lint fmt check clean
+.PHONY: help install corpus stats chunks questions index reindex test lint fmt check clean
 
 PYTHON ?= python
 
@@ -22,6 +22,12 @@ chunks:  ## Compare the two chunking strategies
 questions:  ## Verify the question set against the corpus
 	$(PYTHON) -m src.eval.verify_questions
 
+index:  ## Build the BM25 and dense retrieval indexes
+	$(PYTHON) -m src.ingestion.indexer
+
+reindex:  ## Rebuild the dense index from scratch
+	$(PYTHON) -m src.ingestion.indexer --rebuild
+
 test:  ## Run the test suite
 	$(PYTHON) -m pytest tests/ -q
 
@@ -35,6 +41,6 @@ fmt:  ## Apply formatting and autofixable lint rules
 
 check: lint test  ## Everything CI runs
 
-clean:  ## Remove caches (keeps the downloaded corpus)
+clean:  ## Remove caches (keeps the downloaded corpus and indexes)
 	rm -rf .pytest_cache .ruff_cache
 	find . -type d -name __pycache__ -prune -exec rm -rf {} +
