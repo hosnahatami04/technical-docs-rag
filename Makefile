@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help install corpus stats chunks questions index reindex test lint fmt check clean
+.PHONY: help install corpus stats chunks questions index reindex eval analyze test lint fmt check clean
 
 PYTHON ?= python
 
@@ -27,6 +27,13 @@ index:  ## Build the BM25 and dense retrieval indexes
 
 reindex:  ## Rebuild the dense index from scratch
 	$(PYTHON) -m src.ingestion.indexer --rebuild
+
+eval:  ## Run all questions through all retrievers, then report
+	$(PYTHON) -m src.eval.runner
+	$(PYTHON) -m src.eval.report
+
+analyze:  ## Explain the evaluation results question by question
+	$(PYTHON) -m src.eval.analyze
 
 test:  ## Run the test suite
 	$(PYTHON) -m pytest tests/ -q

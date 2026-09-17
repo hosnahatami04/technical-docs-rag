@@ -1,0 +1,66 @@
+======================================================================
+WHY THE NUMBERS CAME OUT THAT WAY
+======================================================================
+
+Exclusive wins at Hit@3, section level
+----------------------------------------------------------------------
+
+  bm25 gets 7 that dense misses
+    by category: {'factual': 3, 'procedural': 3, 'conceptual': 1}
+    fact-005: What password encryption method does PostgreSQL use by def
+    fact-014: What happens if a materialized view is created WITH NO DAT
+    fact-017: How do I disable parallel vacuum for a single VACUUM comma
+    proc-005: How do I add a NOT NULL constraint to an existing column?
+    proc-012: How do I perform a point-in-time recovery?
+
+  dense gets 11 that bm25 misses
+    by category: {'factual': 1, 'procedural': 3, 'conceptual': 5, 'multi_section': 2}
+    fact-016: What lock level does CREATE INDEX take on a temporary tabl
+    proc-006: How do I rebuild an index without blocking writes to the t
+    proc-009: How do I set up logical replication between two databases?
+    proc-013: How do I create a table that inherits from another table?
+    conc-002: Why does PostgreSQL need VACUUM at all?
+
+----------------------------------------------------------------------
+What RRF fusion actually did
+----------------------------------------------------------------------
+
+  versus bm25:
+    fusion improved the rank on   22 questions
+    fusion worsened the rank on    9 questions
+    net                          +13
+
+  versus dense:
+    fusion improved the rank on   14 questions
+    fusion worsened the rank on   14 questions
+    net                           +0
+
+----------------------------------------------------------------------
+Misses: where was the gold passage?
+----------------------------------------------------------------------
+
+  bm25
+    not in the top 20 at all        7
+      of those, right file found    5
+    found but below rank 5          9
+
+  dense
+    not in the top 20 at all        4
+      of those, right file found    4
+    found but below rank 5          8
+
+  hybrid
+    not in the top 20 at all        3
+      of those, right file found    2
+    found but below rank 5          8
+
+----------------------------------------------------------------------
+Questions no retriever answers at section level
+----------------------------------------------------------------------
+
+  1 questions:
+    proc-011 [procedural] How do I find which queries are currently running on
+
+  These are where the next improvement is, if there is one.
+
+======================================================================
