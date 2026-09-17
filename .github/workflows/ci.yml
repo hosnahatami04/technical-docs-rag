@@ -68,14 +68,15 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      # The plan asks CI to fail when retrieval or groundedness regresses. A
-      # runner cannot reproduce those numbers — it has no corpus, no embedding
-      # index and no GPU — so this checks the committed results instead.
+      # No dependency installation, deliberately. The script is standard
+      # library only and reads the committed JSON directly, so this job needs
+      # neither the 500MB of torch nor the embedding model — a gate that is
+      # expensive to run is a gate that gets skipped.
       #
-      # That still catches what matters. The numbers in results/ are what the
-      # README and the PR descriptions quote, so a change that degrades
-      # retrieval and regenerates them fails here, and so does hand-editing
-      # them to look better.
+      # It checks committed results rather than recomputing them, because a
+      # runner has no corpus, no index and no GPU. That still catches a change
+      # which degrades retrieval and regenerates the numbers, and it catches
+      # hand-editing them to look better.
       - name: Check committed results against thresholds
         run: python scripts/check_thresholds.py
 

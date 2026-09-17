@@ -18,17 +18,20 @@ run-to-run movement does not fail the build while a real regression does.
 
 from __future__ import annotations
 
+import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-# This script lives in scripts/, so the project root is not on sys.path when it
-# is run directly. Adding it here means `python scripts/check_thresholds.py`
-# works from the repository root without a PYTHONPATH incantation in CI.
+# Deliberately standard library only. This script imports nothing from src/,
+# which means the CI job that runs it needs no dependencies — no torch, no
+# tiktoken, no embedding model. It reads the committed JSON and does the
+# arithmetic itself.
+#
+# The duplication with src/eval/metrics.py is the price, and it is worth
+# paying: a gate that needs 500MB of PyTorch installed to compute an average
+# is a gate that gets skipped.
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
-
 RESULTS = PROJECT_ROOT / "results"
 
 # One question is worth 1/55 = 0.018 on retrieval and 1/15 = 0.067 on
@@ -80,34 +83,37 @@ def _fail(message: str) -> int:
     return 1
 
 
+def _mean(values: list[float]) -> float:
+    return sum(values) / len(values) if values else 0.0
+
+
 def check_retrieval(failures: list[str]) -> None:
     path = RESULTS / "eval_raw.json"
     if not path.exists():
         failures.append(f"{path} is missing. Run: make eval")
         return
 
-    # Imported here rather than at module scope so the script still runs and
-    # reports a useful error when the full dependency stack is absent.
-    from src.eval.metrics import MatchLevel, summarize
-    from src.eval.runner import load_raw
-
-    raw = load_raw(path)
+    raw = json.loads(path.read_text(encoding="utf-8"))["strategies"]
     print("\nRetrieval (results/eval_raw.json)")
 
     for (strategy, retriever, level, metric), threshold in RETRIEVAL_THRESHOLDS.items():
-        results = raw.get(strategy, {}).get(retriever)
-        if not results:
+        rows = raw.get(strategy, {}).get(retriever)
+        if not rows:
             failures.append(f"missing results for {strategy}/{retriever}")
             continue
 
-        summary = summarize(
-            results,
-            retriever=retriever,
-            level=MatchLevel.FILE if level == "file" else MatchLevel.SECTION,
-        )
-        actual = (
-            summary.mrr if metric == "mrr" else summary.hits.get(int(metric[4:]), 0.0)
-        )
+        # Only answerable questions are scored; the rest have no gold passage,
+        # so every retriever scores zero on them. Same rule as src/eval/metrics.
+        scored = [r for r in rows if r["answerable"]]
+        rank_field = "file_rank" if level == "file" else "section_rank"
+        ranks = [r[rank_field] for r in scored]
+
+        if metric == "mrr":
+            actual = _mean([1.0 / rank if rank else 0.0 for rank in ranks])
+        else:
+            k = int(metric.removeprefix("hit@"))
+            actual = _mean([1.0 if rank and rank <= k else 0.0 for rank in ranks])
+
         ok, line = threshold.check(actual)
         print(line)
         if not ok:
@@ -120,22 +126,46 @@ def check_generation(failures: list[str]) -> None:
         failures.append(f"{path} is missing. Run: make generate")
         return
 
-    from src.eval.generation_metrics import summarize_generation
-    from src.eval.generation_runner import load_generation_raw
-
-    configurations = load_generation_raw(path)
-    results = configurations.get("both_gates")
-    if not results:
+    configurations = json.loads(path.read_text(encoding="utf-8"))["configurations"]
+    rows = configurations.get("both_gates")
+    if not rows:
         failures.append("generation results have no 'both_gates' configuration")
         return
 
-    summary = summarize_generation(results, label="both_gates")
     print("\nGeneration (results/generation_raw.json)")
 
+    unanswerable = [r for r in rows if not r["answerable"]]
+    answerable = [r for r in rows if r["answerable"]]
+    # Groundedness before the gate: every answer the model wrote, including the
+    # ones the gate then rejected. The post-gate number cannot fall below the
+    # threshold by construction, so it would be a useless thing to gate on.
+    scored = [r["grounding_score"] for r in rows if r["grounding_score"] is not None]
+
+    # Answerability as a binary classification, positive = "answerable".
+    true_positive = sum(1 for r in answerable if not r["abstained"])
+    false_negative = sum(1 for r in answerable if r["abstained"])
+    false_positive = sum(1 for r in unanswerable if not r["abstained"])
+    precision = (
+        true_positive / (true_positive + false_positive)
+        if (true_positive + false_positive)
+        else 0.0
+    )
+    recall = (
+        true_positive / (true_positive + false_negative)
+        if (true_positive + false_negative)
+        else 0.0
+    )
+
     actuals = {
-        "correct_abstention": summary.correct_abstention_rate,
-        "groundedness_pre_gate": summary.groundedness_pre_gate,
-        "answerability_f1": summary.answerability_f1,
+        "correct_abstention": _mean(
+            [1.0 if r["abstained"] else 0.0 for r in unanswerable]
+        ),
+        "groundedness_pre_gate": _mean(scored),
+        "answerability_f1": (
+            2 * precision * recall / (precision + recall)
+            if (precision + recall)
+            else 0.0
+        ),
     }
     for key, threshold in GENERATION_THRESHOLDS.items():
         ok, line = threshold.check(actuals[key])
@@ -177,8 +207,10 @@ def main() -> int:
     try:
         check_retrieval(failures)
         check_generation(failures)
-    except ImportError as exc:
-        return _fail(f"cannot import the project: {exc}")
+    except (KeyError, TypeError, json.JSONDecodeError) as exc:
+        # A results file that does not have the shape this script expects is a
+        # failure, not something to report as "all checks passed".
+        return _fail(f"results file is malformed: {type(exc).__name__}: {exc}")
     check_reports_exist(failures)
 
     print("\n" + "=" * 68)
