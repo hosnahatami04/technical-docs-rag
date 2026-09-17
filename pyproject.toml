@@ -25,6 +25,9 @@ ignore = [
 # rule but make the table unreadable, and the formatter normalizes them back to
 # literals anyway.
 "src/ingestion/loader.py" = ["RUF001"]
+# report.py writes prose for a human reader, where an en-dash in a range is
+# correct typography, not a typo.
+"src/eval/report.py" = ["RUF001"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
