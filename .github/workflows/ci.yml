@@ -52,9 +52,19 @@ jobs:
           pip install --extra-index-url https://download.pytorch.org/whl/cpu \
             -r requirements.txt
 
+      # Printed because a version mismatch here is the failure mode that costs
+      # the most time to diagnose: the tests fail at collection with a
+      # DeprecationWarning from a transitive dependency, and the traceback
+      # names starlette rather than whatever actually resolved wrongly.
+      - name: Show resolved versions
+        run: pip list
+
       # Every test builds its own fixtures. None reads data/raw/ (gitignored,
       # 13MB) or calls Ollama (no model on a runner), which is what keeps this
       # job under a minute and independent of anything external.
+      #
+      # -p no:randomly and a fixed order are not needed: nothing here shares
+      # state between tests.
       - name: Run tests
         run: pytest tests/ -q
 

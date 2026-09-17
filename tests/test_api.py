@@ -89,6 +89,24 @@ class FakeClient:
         return self._available
 
 
+class FakePath:
+    """Stands in for CORPUS_ROOT so a test can control whether it exists.
+
+    The corpus is gitignored, so on a runner it never does and on a developer
+    machine it usually does. A health check that reads the real filesystem
+    would therefore give different answers in the two places.
+    """
+
+    def __init__(self, exists: bool) -> None:
+        self._exists = exists
+
+    def exists(self) -> bool:
+        return self._exists
+
+    def __str__(self) -> str:
+        return "data/raw/sgml"
+
+
 @pytest.fixture
 def ready_state(monkeypatch: pytest.MonkeyPatch) -> FakePipeline:
     """A service that has finished starting up, with a fake pipeline behind it."""
@@ -107,6 +125,13 @@ def ready_state(monkeypatch: pytest.MonkeyPatch) -> FakePipeline:
     )
     # The app's lifespan would rebuild real state over the fake one.
     monkeypatch.setattr(api, "_build_state", lambda: None)
+
+    # health() reads CORPUS_ROOT.exists() from the real filesystem, which is
+    # the one thing this fixture cannot fake by assigning to _state. Left
+    # alone, these tests pass on a developer machine that has run
+    # `bash data/download.sh` and fail in CI, where data/raw/ is gitignored and
+    # never present — which is exactly what happened.
+    monkeypatch.setattr(api, "CORPUS_ROOT", FakePath(exists=True))
     return pipeline
 
 
@@ -143,6 +168,18 @@ def test_health_is_degraded_when_the_model_is_unreachable(
     assert body["status"] == "degraded"
     assert body["model_available"] is False
     assert "ollama serve" in body["detail"]
+
+
+def test_health_is_degraded_when_the_corpus_is_missing(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # The in-memory index keeps serving, but a restart would fail — so this is
+    # degraded rather than ok, and the detail has to say why.
+    monkeypatch.setattr(api, "CORPUS_ROOT", FakePath(exists=False))
+    body = client.get("/health").json()
+    assert body["status"] == "degraded"
+    assert body["corpus_present"] is False
+    assert "Corpus missing" in body["detail"]
 
 
 def test_health_reports_starting_before_indexes_are_ready(
