@@ -1,0 +1,130 @@
+Loading corpus and indexes ...
+  6,406 chunks indexed
+
+  ★★ = retrieved the gold passage
+  ★  = retrieved the gold file, but the wrong passage
+
+==========================================================================
+fact-001  [factual]
+  What is the default value of max_wal_size in PostgreSQL?
+  gold: config.sgml
+        Server Configuration > Write Ahead Log > Checkpoints
+==========================================================================
+
+  bm25
+    ★★ 1. [33.3079] config.sgml            Server Configuration > Write Ahead Log >
+       2. [26.7585] perform.sgml           Performance Tips > Populating a Database
+       3. [25.6690] wal.sgml               Reliability and the Write-Ahead Log > WA
+
+  dense
+    ★★ 1. [ 0.8581] config.sgml            Server Configuration > Write Ahead Log >
+    ★★ 2. [ 0.8183] config.sgml            Server Configuration > Write Ahead Log >
+       3. [ 0.7907] limits.sgml            PostgreSQL Limits
+
+  hybrid
+    ★★ 1. [ 0.0328] config.sgml            Server Configuration > Write Ahead Log >  bm25=1 dense=1
+       2. [ 0.0311] perform.sgml           Performance Tips > Populating a Database  bm25=2 dense=7
+    ★  3. [ 0.0308] config.sgml            Server Configuration > Replication > Sen  bm25=6 dense=4
+
+==========================================================================
+fact-006  [factual]
+  How many iterations does SCRAM use when hashing a password by default?
+  gold: config.sgml
+        Server Configuration > Connections and Authentication > Authentication
+==========================================================================
+
+  bm25
+    ★★ 1. [34.0948] config.sgml            Server Configuration > Connections and A
+    ★★ 2. [22.8638] config.sgml            Server Configuration > Connections and A
+       3. [21.7327] pgcrypto.sgml          pgcrypto — cryptographic functions > Pas
+
+  dense
+    ★★ 1. [ 0.9064] config.sgml            Server Configuration > Connections and A
+       2. [ 0.7866] client-auth.sgml       Client Authentication > Password Authent
+    ★★ 3. [ 0.7588] config.sgml            Server Configuration > Connections and A
+
+  hybrid
+    ★★ 1. [ 0.0328] config.sgml            Server Configuration > Connections and A  bm25=1 dense=1
+    ★★ 2. [ 0.0320] config.sgml            Server Configuration > Connections and A  bm25=2 dense=3
+       3. [ 0.0311] client-auth.sgml       Client Authentication > Password Authent  bm25=7 dense=2
+
+==========================================================================
+fact-009  [factual]
+  How often does PostgreSQL rotate log files by default?
+  gold: config.sgml
+        Server Configuration > Error Reporting and Logging > Where to Log
+==========================================================================
+
+  bm25
+    ★★ 1. [18.4511] config.sgml            Server Configuration > Error Reporting a
+       2. [15.3204] func.sgml              Functions and Operators > System Adminis
+    ★★ 3. [15.0931] config.sgml            Server Configuration > Error Reporting a
+
+  dense
+       1. [ 0.8687] maintenance.sgml       Routine Database Maintenance Tasks > Log
+    ★★ 2. [ 0.8544] config.sgml            Server Configuration > Error Reporting a
+       3. [ 0.8249] maintenance.sgml       Routine Database Maintenance Tasks > Log
+
+  hybrid
+    ★★ 1. [ 0.0320] config.sgml            Server Configuration > Error Reporting a  bm25=3 dense=2
+       2. [ 0.0315] maintenance.sgml       Routine Database Maintenance Tasks > Log  bm25=4 dense=3
+       3. [ 0.0311] maintenance.sgml       Routine Database Maintenance Tasks > Log  bm25=8 dense=1
+
+==========================================================================
+conc-003  [conceptual]
+  What is MVCC and how does PostgreSQL use it?
+  gold: mvcc.sgml
+        Concurrency Control > Introduction
+==========================================================================
+
+  bm25
+    ★★ 1. [10.7461] mvcc.sgml              Concurrency Control > Introduction
+       2. [10.0597] indexam.sgml           Index Access Method Interface Definition
+       3. [ 7.7716] storage.sgml           Database Physical Storage > Heap-Only Tu
+
+  dense
+    ★★ 1. [ 0.8332] mvcc.sgml              Concurrency Control > Introduction
+       2. [ 0.7413] storage.sgml           Database Physical Storage > Heap-Only Tu
+       3. [ 0.7398] features.sgml          SQL Conformance
+
+  hybrid
+    ★★ 1. [ 0.0328] mvcc.sgml              Concurrency Control > Introduction  bm25=1 dense=1
+       2. [ 0.0320] storage.sgml           Database Physical Storage > Heap-Only Tu  bm25=3 dense=2
+    ★  3. [ 0.0308] mvcc.sgml              Concurrency Control > Explicit Locking  bm25=4 dense=6
+
+==========================================================================
+unans-006  [unanswerable]
+  What is the default value of autovacuum_vacuum_max_threshold?
+  gold: (unanswerable) autovacuum_vacuum_max_threshold was added in PostgreSQL 18. 
+==========================================================================
+
+  bm25
+       1. [34.8090] ref/create_table.sgml  CREATE TABLE > Parameters > Storage Para
+       2. [30.0700] maintenance.sgml       Routine Database Maintenance Tasks > Rou
+       3. [26.6027] config.sgml            Server Configuration > Automatic Vacuumi
+
+  dense
+       1. [ 0.8648] config.sgml            Server Configuration > Automatic Vacuumi
+       2. [ 0.8399] config.sgml            Server Configuration > Automatic Vacuumi
+       3. [ 0.8231] config.sgml            Server Configuration > Automatic Vacuumi
+
+  hybrid
+       1. [ 0.0320] config.sgml            Server Configuration > Automatic Vacuumi  bm25=4 dense=1
+       2. [ 0.0320] config.sgml            Server Configuration > Automatic Vacuumi  bm25=3 dense=2
+       3. [ 0.0310] config.sgml            Server Configuration > Automatic Vacuumi  bm25=6 dense=3
+
+==========================================================================
+
+  What to look for:
+
+  - fact-001 names max_wal_size outright. BM25 should win it outright; if the
+    dense retriever also finds it, the embedding is doing more than expected.
+  - fact-006 and fact-009 ask for something without naming it. BM25 has no
+    literal term to match, so this is where dense retrieval should pull ahead.
+  - conc-003 has no identifier at all.
+  - unans-006 names a parameter that does not exist. Every retriever will
+    return something confident, which is the whole reason Phase 6 needs an
+    answerability gate — retrieval alone cannot abstain.
+
+  Numbers, not impressions, come from Phase 5.
+

@@ -1,6 +1,16 @@
 # ---- Phase 1: corpus ingestion ----
-lxml==5.3.0             # XML/DocBook parsing with XPath
-tiktoken==0.8.0         # token counting for corpus statistics
+lxml==5.3.0                     # XML/DocBook parsing with XPath
+tiktoken==0.8.0                 # token counting for corpus statistics
+
+# ---- Phase 4: retrieval ----
+rank-bm25==0.2.2                # lexical retrieval (BM25Okapi)
+sentence-transformers==3.3.1    # embedding model runner
+numpy==2.5.1                    # score arrays and RRF fusion
+
+# chromadb 0.6.x depends on chroma-hnswlib, which ships no wheel for Python
+# 3.13 and fails to build without Microsoft C++ Build Tools. 1.0.x replaced
+# that C++ extension, so it installs cleanly on a stock Python 3.13.
+chromadb==1.0.21
 
 # ---- Tooling ----
 pytest==8.3.4

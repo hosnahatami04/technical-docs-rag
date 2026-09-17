@@ -5,6 +5,9 @@ data/raw/
 data/indexes/
 *.chroma/
 
+# Scratch space for long commit messages, never committed
+.msgtmp/
+
 # Python
 __pycache__/
 *.py[cod]
