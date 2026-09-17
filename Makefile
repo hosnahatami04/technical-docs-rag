@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help install corpus stats chunks questions index reindex eval analyze test lint fmt check clean
+.PHONY: help install corpus stats chunks questions index reindex eval analyze generate ask test lint fmt check clean
 
 PYTHON ?= python
 
@@ -34,6 +34,13 @@ eval:  ## Run all questions through all retrievers, then report
 
 analyze:  ## Explain the evaluation results question by question
 	$(PYTHON) -m src.eval.analyze
+
+generate:  ## Run the full pipeline over every question, then report
+	$(PYTHON) -m src.eval.generation_runner
+	$(PYTHON) -m src.eval.generation_report
+
+ask:  ## Ask one question through the full pipeline
+	$(PYTHON) -m src.generation.demo
 
 test:  ## Run the test suite
 	$(PYTHON) -m pytest tests/ -q
