@@ -20,8 +20,9 @@ in the answer is backed by a source.
 
 Everything runs locally. Nothing is sent anywhere.
 
-**[Watch a 2-minute demo](https://youtu.be/y4Pn6LMQ0zM)** — includes the model
-inventing a syntax that doesn't exist, and both checks catching it.
+### Watch the demo
+
+[![Watch the demo](docs/demo-thumbnail.jpg)](https://youtu.be/y4Pn6LMQ0zM)
 
 ## How well it works
 
