@@ -20,6 +20,9 @@ in the answer is backed by a source.
 
 Everything runs locally. Nothing is sent anywhere.
 
+**[Watch a 2-minute demo](https://youtu.be/y4Pn6LMQ0zM)** — includes the model
+inventing a syntax that doesn't exist, and both checks catching it.
+
 ## How well it works
 
 70 hand-written questions, 15 of which have no answer in the docs.
