@@ -12,7 +12,7 @@ does editing them by hand to look better. What it cannot catch is a change that
 degrades retrieval without regenerating the results; `make eval` is what closes
 that gap, and it is the developer's job to run it.
 
-Thresholds sit a little below the values measured on 2026-09-17, so ordinary
+Thresholds sit a little below the measured values, so ordinary
 run-to-run movement does not fail the build while a real regression does.
 """
 
