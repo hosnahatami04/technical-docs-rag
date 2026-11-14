@@ -5,10 +5,10 @@ Run:  python -m src.eval.generation_report
 Reads results/generation_raw.json and writes results/generation.md.
 
 What this report has to make visible, and what a single quality score would
-hide: which gate stopped what. The plan's example sentence is
-"the answerability gate catches 13 of 15 unanswerable questions; the grounding
-gate catches 4 hallucinated claims that slipped past it" — two numbers that only
-exist because the gates are separate.
+hide: which gate stopped what. A sentence like "the answerability gate catches
+13 of 15 unanswerable questions; the grounding gate catches 4 hallucinated
+claims that slipped past it" carries two numbers that only exist because the
+gates are separate.
 """
 
 from __future__ import annotations
@@ -189,12 +189,13 @@ def build_report(configurations: dict[str, list[GenerationResult]]) -> str:
     no_gates = next((s for s in summaries if s.label == "no_gates"), None)
     if no_gates:
         delta = main.correct_abstention_rate - no_gates.correct_abstention_rate
+        n_delta = round(abs(delta) / ONE_UNANSWERABLE)
         add(
             f"Without gates, the system correctly refuses "
             f"{_pct(no_gates.correct_abstention_rate)} of unanswerable "
             f"questions; with both gates, {_pct(main.correct_abstention_rate)} "
             f"— a difference of {delta:+.3f}, about "
-            f"{abs(delta) / ONE_UNANSWERABLE:.0f} questions."
+            f"{n_delta} question{'' if n_delta == 1 else 's'}."
         )
         add("")
         add(
@@ -227,7 +228,7 @@ def build_report(configurations: dict[str, list[GenerationResult]]) -> str:
         if r.abstained and r.stopped_by == "answerability" and not r.answerable
     )
     add(
-        f"In the plan's terms: the answerability gate catches "
+        f"In short: the answerability gate catches "
         f"{answerability_catches} of {main.n_unanswerable} unanswerable "
         f"questions, and the grounding gate catches {grounding_catches} "
         f"answers whose claims the sources did not support."

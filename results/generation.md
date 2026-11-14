@@ -30,7 +30,7 @@ Each configuration changes one thing, so the effect of each gate can be attribut
 | Answerability gate only | 0.867 | 0.073 | 2 / 15 | — | — | 0.944 |
 | Threshold gate (instead of LLM) | 0.867 | 0.182 | 2 / 15 | 0.889 | 1.000 | 0.882 |
 
-Without gates, the system correctly refuses 0.800 of unanswerable questions; with both gates, 0.867 — a difference of +0.067, about 1 questions.
+Without gates, the system correctly refuses 0.800 of unanswerable questions; with both gates, 0.867 — a difference of +0.067, about 1 question.
 
 The ungated number is not zero because the generator sometimes declines on its own when the sources plainly do not answer. That is not a substitute for a gate: it is unmeasured, unswitchable, and cannot be reported separately.
 
@@ -43,7 +43,7 @@ The reason the gates are separate modules. A single quality check could report t
 | answerability | 17 | 13 | 4 |
 | grounding | 7 | 0 | 7 |
 
-In the plan's terms: the answerability gate catches 13 of 15 unanswerable questions, and the grounding gate catches 7 answers whose claims the sources did not support.
+In short: the answerability gate catches 13 of 15 unanswerable questions, and the grounding gate catches 7 answers whose claims the sources did not support.
 
 ## Groundedness
 

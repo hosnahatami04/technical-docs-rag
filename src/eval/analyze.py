@@ -150,7 +150,7 @@ def main() -> int:
             for name in ("bm25", "dense", "hybrid")
         )
     ]
-    print(f"\n  {len(universal)} questions:")
+    print(f"\n  {len(universal)} question{'' if len(universal) == 1 else 's'}:")
     for qid in universal:
         question = questions[qid]
         print(f"    {qid} [{question.category}] {question.question[:52]}")

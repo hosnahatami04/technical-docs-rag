@@ -267,7 +267,7 @@ def build_report(
         add("## Hybrid retrieval did not win, and here is why")
         add("")
         add(
-            f"The plan expects RRF fusion to beat either retriever alone. On "
+            f"The starting hypothesis was that RRF fusion would beat either retriever alone. On "
             f"this corpus it does not: dense retrieval scores "
             f"{_pct(dense_mrr.mrr)} on section-level MRR against the hybrid's "
             f"{_pct(hybrid_mrr.mrr)}, a gap of "
