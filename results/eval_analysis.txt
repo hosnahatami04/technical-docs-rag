@@ -58,7 +58,7 @@ Misses: where was the gold passage?
 Questions no retriever answers at section level
 ----------------------------------------------------------------------
 
-  1 questions:
+  1 question:
     proc-011 [procedural] How do I find which queries are currently running on
 
   These are where the next improvement is, if there is one.

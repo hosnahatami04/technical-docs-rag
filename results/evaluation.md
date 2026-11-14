@@ -102,7 +102,7 @@ What structure-aware chunking buys is not visible in this table. It is the headi
 
 ## Hybrid retrieval did not win, and here is why
 
-The plan expects RRF fusion to beat either retriever alone. On this corpus it does not: dense retrieval scores 0.613 on section-level MRR against the hybrid's 0.585, a gap of 0.028 — about 1.5 questions.
+The starting hypothesis was that RRF fusion would beat either retriever alone. On this corpus it does not: dense retrieval scores 0.613 on section-level MRR against the hybrid's 0.585, a gap of 0.028 — about 1.5 questions.
 
 Reporting that plainly is the point. The mechanism is visible in the per-question record (`python -m src.eval.analyze`):
 
